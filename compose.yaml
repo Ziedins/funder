@@ -1,0 +1,24 @@
+
+services:
+###> doctrine/doctrine-bundle ###
+  database:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'app'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'lets_change'
+      MYSQL_ROOT_PASSWORD: 'lets_change'
+    volumes:
+      - my-db:/var/lib/mysql
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+###< doctrine/doctrine-bundle ###
+
+volumes:
+  my-db:
+###> doctrine/doctrine-bundle ###
+  database_data:
+###< doctrine/doctrine-bundle ###
