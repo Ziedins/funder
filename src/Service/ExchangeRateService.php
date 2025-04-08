@@ -43,6 +43,7 @@ class ExchangeRateService
             throw new \Exception('Currency not found: ' . $currencyIso);
         }
 
+        //TODO fetch latestRates
         $response = json_decode(DummyRateService::latestRates($currency->getName()), true);
 
         if (isset($response['success']) && $response['success'] && isset($response['rates'])) {
