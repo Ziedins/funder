@@ -24,7 +24,7 @@ final class Version20250406150601 extends AbstractMigration
             CREATE TABLE account (id INT AUTO_INCREMENT NOT NULL, customer_id INT NOT NULL, currency_id INT NOT NULL, balance NUMERIC(10, 2) NOT NULL, INDEX IDX_7D3656A49395C3F3 (customer_id), INDEX IDX_7D3656A438248176 (currency_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE currency (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(40) NOT NULL, symbol VARCHAR(10) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
+            CREATE TABLE currency (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(40) NOT NULL, symbol VARCHAR(10) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
         SQL);
         $this->addSql(<<<'SQL'
             ALTER TABLE account ADD CONSTRAINT FK_7D3656A49395C3F3 FOREIGN KEY (customer_id) REFERENCES customer (id)
@@ -34,9 +34,9 @@ final class Version20250406150601 extends AbstractMigration
         SQL);
 
         $this->addSql(<<<'SQL'
-            INSERT INTO currency (name, symbol) VALUES ("euro", "€");
-            INSERT INTO currency (name, symbol) VALUES ("dollar", "$");
-            INSERT INTO currency (name, symbol) VALUES ("yen", "¥");
+            INSERT INTO currency (name, symbol) VALUES ("EUR", "€");
+            INSERT INTO currency (name, symbol) VALUES ("USD", "$");
+            INSERT INTO currency (name, symbol) VALUES ("JPY", "¥");
         SQL);
     }
 

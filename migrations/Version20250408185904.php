@@ -10,18 +10,18 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250406141011 extends AbstractMigration
+final class Version20250408185904 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Add Customer(Client) Entity table';
+        return '';
     }
 
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql(<<<'SQL'
-            CREATE TABLE customer (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
+            ALTER TABLE exchange_rate CHANGE rate rate NUMERIC(13, 7) NOT NULL
         SQL);
     }
 
@@ -29,7 +29,7 @@ final class Version20250406141011 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql(<<<'SQL'
-            DROP TABLE customer
+            ALTER TABLE exchange_rate CHANGE rate rate NUMERIC(10, 7) NOT NULL
         SQL);
     }
 }
