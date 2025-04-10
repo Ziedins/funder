@@ -44,7 +44,7 @@ class ExchangeRateService
         }
 
         //TODO fetch latestRates
-        $response = json_decode(DummyRateService::latestRates($currency->getName()), true);
+        $response = json_decode(DummyService::latestRates($currency->getName()), true);
 
         if (isset($response['success']) && $response['success'] && isset($response['rates'])) {
             $this->persistCurrencyRates($currency, $response['rates']);
