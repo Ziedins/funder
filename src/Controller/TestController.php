@@ -46,7 +46,6 @@ final class TestController extends AbstractController
     {
         $this->dummyService->AddJohnDoe();
 
-        $accounts = $this->accountRepository->findAll();
-        $this->accountTransferService->transferBetweenAccounts($accounts[1], $accounts[0], 1);
+
     }
 }
