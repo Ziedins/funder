@@ -2,7 +2,6 @@
 
 namespace App\Repository;
 
-use App\Entity\Currency;
 use App\Entity\ExchangeRate;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -17,9 +16,13 @@ class ExchangeRateRepository extends ServiceEntityRepository
         parent::__construct($registry, ExchangeRate::class);
     }
 
-    public function findExchangeRate(int $baseCurrencyId, int $targetCurrencyId): ?ExchangeRate
+    public function findExchangeRate(int $baseCurrencyId, int $targetCurrencyId, bool $strictlyToday = false): ?ExchangeRate
     {
-        return $this->findOneBy(['baseCurrency' => $baseCurrencyId, 'targetCurrency' => $targetCurrencyId]);
+        if ($strictlyToday) {
+            return $this->findOneBy(['baseCurrency' => $baseCurrencyId, 'targetCurrency' => $targetCurrencyId, 'updatedAt' => new \DateTime()]);
+        } else {
+            return $this->findOneBy(['baseCurrency' => $baseCurrencyId, 'targetCurrency' => $targetCurrencyId]);
+        }
     }
 
 //    /**
