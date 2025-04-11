@@ -16,6 +16,24 @@ class TransactionRepository extends ServiceEntityRepository
         parent::__construct($registry, Transaction::class);
     }
 
+    /**
+     * @param int $sourceAccountId
+     * @param int|null $limit
+     * @param int|null $offset
+     * @return Transaction[]
+     */
+    public function getTransactionsBySource(int $sourceAccountId, ?int $limit = null, ?int $offset = null): array
+    {
+        return $this->createQueryBuilder('t')
+            ->where('t.sourceAccount = :source_account_id')
+            ->setParameter('source_account_id', $sourceAccountId)
+            ->orderBy('t.createdAt', 'DESC')
+            ->setMaxResults($limit)
+            ->setFirstResult($offset)
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Transaction[] Returns an array of Transaction objects
     //     */

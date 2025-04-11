@@ -31,6 +31,12 @@ class AccountTransferService
      */
     public function transferBetweenAccounts(Account $sourceAccount, Account $targetAccount, float $transferAmount): void
     {
+        if ($transferAmount <= 0)
+        {
+            throw new \Exception('Transfer amount should be greater than 0');
+
+        }
+
         if ($sourceAccount->getBalance() < $transferAmount) {
             throw new \Exception('Source account does not have enough balance');
         }
