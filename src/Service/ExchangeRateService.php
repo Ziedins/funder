@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Client\ExchangeRateClient;
 use App\Entity\Currency;
 use App\Entity\ExchangeRate;
 use App\Repository\CurrencyRepository;
@@ -14,17 +15,20 @@ class ExchangeRateService
     private ExchangeRateRepository $exchangeRateRepository;
     private \DateTime $today;
     private EntityManagerInterface $entityManager;
+    private ExchangeRateClient $exchangeRateClient;
 
     public function __construct(
         CurrencyRepository     $currencyRepository,
         ExchangeRateRepository $exchangeRateRepository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        ExchangeRateClient     $exchangeRateClient
     )
     {
         $this->currencyRepository = $currencyRepository;
         $this->exchangeRateRepository = $exchangeRateRepository;
         $this->entityManager = $entityManager;
         $this->today = new \DateTime();
+        $this->exchangeRateClient = $exchangeRateClient;
     }
 
     /**
@@ -43,14 +47,9 @@ class ExchangeRateService
             throw new \Exception('Currency not found: ' . $currencyIso);
         }
 
-        //TODO fetch latestRates
-        $response = json_decode(DummyService::latestRates($currency->getName()), true);
+        $rates = $this->exchangeRateClient->getLatestRates($currencyIso);
 
-        if (isset($response['success']) && $response['success'] && isset($response['rates'])) {
-            $this->persistCurrencyRates($currency, $response['rates']);
-        } else {
-            throw new \Exception('Failed to retrieve rates for currency: ' . $currency->getName());
-        }
+        $this->persistCurrencyRates($currency, $rates);
     }
 
     private function persistCurrencyRates(Currency $currency, array $rates): void

@@ -18,7 +18,7 @@ class AccountTransferService
     public function __construct(
         ExchangeRateRepository $exchangeRateRepository,
         EntityManagerInterface $entityManager,
-        ExchangeRateService $exchangeRateService
+        ExchangeRateService    $exchangeRateService
     )
     {
         $this->exchangeRateRepository = $exchangeRateRepository;
@@ -65,8 +65,7 @@ class AccountTransferService
     {
         $exchangeRate = $this->exchangeRateRepository->findExchangeRate($baseCurrency->getId(), $targetCurrency->getId(), true);
 
-        if(!$exchangeRate)
-        {
+        if (!$exchangeRate) {
             $this->exchangeRateService->updateExchangeRates($baseCurrency->getName(), $targetCurrency->getName());
         }
 

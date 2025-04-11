@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\ExchangeRate;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,7 +20,15 @@ class ExchangeRateRepository extends ServiceEntityRepository
     public function findExchangeRate(int $baseCurrencyId, int $targetCurrencyId, bool $strictlyToday = false): ?ExchangeRate
     {
         if ($strictlyToday) {
-            return $this->findOneBy(['baseCurrency' => $baseCurrencyId, 'targetCurrency' => $targetCurrencyId, 'updatedAt' => new \DateTime()]);
+            return $this->createQueryBuilder('r')
+                ->andWhere('r.baseCurrency = :baseCurrency')
+                ->setParameter('baseCurrency', $baseCurrencyId)
+                ->andWhere('r.targetCurrency = :targetCurrency')
+                ->setParameter('targetCurrency', $targetCurrencyId)
+                ->andWhere('r.updatedAt > :updatedAt')
+                ->setParameter('updatedAt', date_format(new \DateTime(), 'Y-m-d'))
+                ->getQuery()
+                ->getOneOrNullResult();
         } else {
             return $this->findOneBy(['baseCurrency' => $baseCurrencyId, 'targetCurrency' => $targetCurrencyId]);
         }
