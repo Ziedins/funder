@@ -46,6 +46,6 @@ final class TestController extends AbstractController
     {
         $this->dummyService->AddJohnDoe();
 
-
+        return new JsonResponse("Okay");
     }
 }

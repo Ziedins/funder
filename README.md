@@ -1,3 +1,17 @@
+# setup & usage
+php bin/console doctrine:database:create
+
+php bin/console doctrine:migrations:migrate
+
+curl http://127.0.0.1:{port}/test
+
+curl http://127.0.0.1:{port}/accounts/1
+
+curl --request POST --data '{"sourceAccountId":2,"targetAccountId":1,"amount":2}' 127.0.0.1:{port}/transfer
+
+curl http://127.0.0.1:64357/transactions/2
+
+
 # Assigment Requirements :
 We are going to launch a new product soon and we need to create a new simple and robust RESTful
 service which provides functionality to transfer funds between our customers' accounts. Therefore
