@@ -6,6 +6,8 @@
 parameters:
     app.exchange_rate_url: '%env(EXCHANGE_RATE_URL)%'
     app.exchange_rate_token: '%env(EXCHANGE_RATE_TOKEN)%'
+    app.db.dsn: mysql:host=%env(DB_HOST)%;
+    app.db.url: mysql://%env(DB_USER)%:%env(DB_PASSWORD)%@%env(DB_HOST)%/%env(DB_SCHEMA)%
 
 services:
     # default configuration for services in *this* file

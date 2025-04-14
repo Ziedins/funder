@@ -1,15 +1,13 @@
 # setup & usage
-php bin/console doctrine:database:create
+docker compose up -d
 
-php bin/console doctrine:migrations:migrate
+docker exec php bin/console doctrine:migrations:migrate
 
-curl http://127.0.0.1:{port}/test
+curl http://127.0.0.1:8080/accounts/100
 
-curl http://127.0.0.1:{port}/accounts/1
+curl --request POST --data '{"sourceAccountId":1,"targetAccountId":2,"amount":2}' http://127.0.0.1:8080/transfer
 
-curl --request POST --data '{"sourceAccountId":2,"targetAccountId":1,"amount":2}' 127.0.0.1:{port}/transfer
-
-curl http://127.0.0.1:64357/transactions/2
+curl http://127.0.0.1:8080/transactions/1
 
 
 # Assigment Requirements :

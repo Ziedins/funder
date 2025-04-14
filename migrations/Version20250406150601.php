@@ -32,12 +32,6 @@ final class Version20250406150601 extends AbstractMigration
         $this->addSql(<<<'SQL'
             ALTER TABLE account ADD CONSTRAINT FK_7D3656A438248176 FOREIGN KEY (currency_id) REFERENCES currency (id)
         SQL);
-
-        $this->addSql(<<<'SQL'
-            INSERT INTO currency (name, symbol) VALUES ("EUR", "€");
-            INSERT INTO currency (name, symbol) VALUES ("USD", "$");
-            INSERT INTO currency (name, symbol) VALUES ("JPY", "¥");
-        SQL);
     }
 
     public function down(Schema $schema): void

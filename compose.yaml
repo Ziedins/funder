@@ -1,24 +1,56 @@
+version: '3.5'
+name: app
 
 services:
-###> doctrine/doctrine-bundle ###
-  database:
-    image: mysql
-    restart: always
-    environment:
-      MYSQL_DATABASE: 'app'
-      MYSQL_USER: 'user'
-      MYSQL_PASSWORD: 'lets_change'
-      MYSQL_ROOT_PASSWORD: 'lets_change'
+  php:
+    container_name: php
+    build:
+      dockerfile: ./.docker/app/Dockerfile
+      context: .
     volumes:
-      - my-db:/var/lib/mysql
-    ports:
-      - '3306:3306'
-    expose:
-      - '3306'
-###< doctrine/doctrine-bundle ###
+      - './:/var/www'
+    networks:
+      - app-network
+    depends_on:
+      - database
 
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    links:
+      - 'php'
+    volumes:
+      - './:/var/www'
+      - './.docker/nginx/nginx-conf:/etc/nginx/conf.d'
+    networks:
+      - app-network
+    depends_on:
+      - php
+
+  # MariaDB Service
+  database:
+    container_name: db
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: $DB_ROOT_PASSWORD
+      MYSQL_DATABASE: $DB_NAME
+      MYSQL_USER: $DB_USER
+      MYSQL_PASSWORD: $DB_PASSWORD
+    restart: unless-stopped
+    volumes:
+      - ./.docker/db/init.sql:/data/application/init.sql
+    command: --init-file /data/application/init.sql
+    networks:
+      - app-network
+    ports:
+      - "3306:3306"
+
+
+networks:
+  app-network:
+    driver: bridge
+# Volumes
 volumes:
-  my-db:
-###> doctrine/doctrine-bundle ###
-  database_data:
-###< doctrine/doctrine-bundle ###
+  mysqldata:
